@@ -8,3 +8,4 @@ Usage
 
     pip install -r requirements.txt
     python trump_desk_scraper.py
+
