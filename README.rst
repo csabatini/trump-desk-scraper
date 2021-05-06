@@ -5,6 +5,7 @@ Web scraping Donald Trump's 'social media' `website <https://www.donaldjtrump.co
 
 Usage
 -----
+Shell commands ::
 
     python -m venv venv/
     source venv/bin/activate
