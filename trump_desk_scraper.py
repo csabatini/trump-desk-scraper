@@ -19,7 +19,8 @@ def scrape_desk():
         post['id'] =  pattern.search(id_raw)[1]
 
         ts = a.find("div", {'class': 'date ftd-d'}).find('p').text
-        post['timestamp'] =  ts
+        post['timestamp'] =  datetime.strptime(ts, '%I:%M%p %B %d, %Y').strftime('%Y-%m-%d %H:%M:%S')
+
 
         content = a.find("div", {'class': 'ftdli-main-content ftd-d'})
         post['text'] = content.find('p').text
