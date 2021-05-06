@@ -1,4 +1,5 @@
 import requests
+import pytz
 import json
 import re
 from datetime import datetime
@@ -11,6 +12,7 @@ def scrape_desk():
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) '
                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     pattern = re.compile('desk-([a-z0-9]+)')
+    tz = pytz.timezone('US/Eastern')
     page = requests.get(TRUMP_SITE_URL, headers=headers, timeout=15)
     soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -19,9 +21,10 @@ def scrape_desk():
         id_raw = a.find("div", {'class': 'title ftd-d'})['onclick']
         post['id'] =  pattern.search(id_raw)[1]
 
-        ts = a.find("div", {'class': 'date ftd-d'}).find('p').text
-        post['timestamp'] =  datetime.strptime(ts, '%I:%M%p %B %d, %Y').strftime('%Y-%m-%d %H:%M:%S')
-
+        ts_txt = a.find("div", {'class': 'date ftd-d'}).find('p').text
+        ts = datetime.strptime(ts_txt, '%I:%M%p %B %d, %Y')
+        utc_ts = tz.normalize(tz.localize(ts)).astimezone(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
+        post['timestamp'] = utc_ts
 
         content = a.find("div", {'class': 'ftdli-main-content ftd-d'})
         post['text'] = content.find('p').text
