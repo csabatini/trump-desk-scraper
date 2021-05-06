@@ -1,6 +1,7 @@
 import requests
 import json
 import re
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 TRUMP_SITE_URL = 'https://www.donaldjtrump.com/desk'
