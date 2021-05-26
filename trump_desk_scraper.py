@@ -27,7 +27,7 @@ def scrape_desk():
         post['timestamp'] = utc_ts
 
         content = a.find("div", {'class': 'ftdli-main-content ftd-d'})
-        post['text'] = content.find('p').text
+        post['text'] = re.sub(r'[\n]{2,}', r'\n', content.find('p').text)
 
         media_url = None
         if a['data-video'] == 'true':
